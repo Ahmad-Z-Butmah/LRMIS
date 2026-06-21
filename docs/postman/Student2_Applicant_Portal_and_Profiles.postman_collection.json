@@ -1,0 +1,313 @@
+{
+  "info": {
+    "name": "Student 2 - Applicant Portal and Profiles",
+    "_postman_id": "b2c3d4e5-f6a7-8901-bcde-fa2345678901",
+    "description": "Postman collection for Student 2 — Applicant Portal and Profiles (LRMIS).\n\nPre-requisites:\n  1. Start MongoDB:  docker start lrmis-mongo\n  2. Run Student 1 seed:  python -m app.seed.seed_data\n  3. Run Student 2 seed:  python -m app.seed.seed_student2\n  4. Start backend:  python -m uvicorn app.main:app --reload --port 8001\n\nCollection variables (edit as needed):\n  base_url       — http://127.0.0.1:8001\n  applicant_id   — APPL-001  (seeded citizen: Ahmad Khalil)\n  application_id — LRMIS-2026-0002  (seeded application with a pending_review document)\n  document_id    — DOC-2026-S003  (ownership_deed in pending_review status for LRMIS-2026-0002)\n\nNOTE ON NOTIFICATION STUBS:\n  There is no direct HTTP endpoint for reading or creating notification stubs.\n  The notification_service.create_notification_stub() function writes to the\n  notification_logs MongoDB collection internally. See item 9 for the indirect mechanism.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8001",
+      "type": "string"
+    },
+    {
+      "key": "applicant_id",
+      "value": "APPL-001",
+      "type": "string"
+    },
+    {
+      "key": "application_id",
+      "value": "LRMIS-2026-0002",
+      "type": "string"
+    },
+    {
+      "key": "document_id",
+      "value": "DOC-2026-S003",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Student 2 - Create Applicant",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"full_name\": \"Tariq Nasser\",\n  \"applicant_type\": \"citizen\",\n  \"identity\": {\n    \"national_id\": \"950123999\",\n    \"registration_number\": null\n  },\n  \"contacts\": {\n    \"email\": \"tariq.nasser@example.com\",\n    \"phone\": \"+970599000099\"\n  },\n  \"address\": {\n    \"city\": \"Bethlehem\",\n    \"neighborhood\": \"Beit Jala\",\n    \"zone_id\": \"Z-SOUTH\"\n  },\n  \"preferences\": {\n    \"preferred_language\": \"ar\",\n    \"preferred_contact\": \"email\",\n    \"notifications\": {\n      \"on_status_change\": true,\n      \"on_missing_documents\": true,\n      \"on_certificate_ready\": true\n    }\n  },\n  \"privacy_settings\": {\n    \"show_phone_to_staff\": true,\n    \"show_email_to_staff\": true\n  },\n  \"verification_state\": \"unverified\",\n  \"linked_applications\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applicants/",
+          "host": ["{{base_url}}"],
+          "path": ["applicants", ""]
+        },
+        "description": "Creates a new applicant profile. Expected result: 201 Created with a generated applicant_id (format APL-YYYY-NNNN) and verification_state 'unverified'.\n\nApplicant types supported: citizen, lawyer, company, surveyor, authorized_representative.\nAt least one of national_id or registration_number is required in the identity object.\nThe verification_state defaults to 'unverified' if omitted."
+      }
+    },
+    {
+      "name": "Student 2 - Create Applicant (Fail: Duplicate national_id)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"full_name\": \"Duplicate Test\",\n  \"applicant_type\": \"citizen\",\n  \"identity\": {\n    \"national_id\": \"900512345\",\n    \"registration_number\": null\n  },\n  \"contacts\": {\n    \"email\": \"duplicate.test@example.com\",\n    \"phone\": \"+970599000001\"\n  },\n  \"address\": {\n    \"city\": \"Ramallah\",\n    \"neighborhood\": \"Center\",\n    \"zone_id\": \"Z-WEST\"\n  },\n  \"preferences\": {\n    \"preferred_language\": \"ar\",\n    \"preferred_contact\": \"email\",\n    \"notifications\": {\n      \"on_status_change\": true,\n      \"on_missing_documents\": false,\n      \"on_certificate_ready\": true\n    }\n  },\n  \"privacy_settings\": {\n    \"show_phone_to_staff\": true,\n    \"show_email_to_staff\": true\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applicants/",
+          "host": ["{{base_url}}"],
+          "path": ["applicants", ""]
+        },
+        "description": "FAILURE EXAMPLE: Duplicate national_id.\n\nThis request uses national_id '900512345', which belongs to the seeded applicant APPL-001 (Ahmad Khalil). The applicants collection has a unique sparse index on identity.national_id.\n\nExpected result: 409 Conflict — applicant_service.py checks for a duplicate national_id before inserting and raises an explicit conflict error. FastAPI returns 409 with a detail message indicating the national_id is already registered.\n\nPre-condition: seed_student2.py must have been run to create the index and APPL-001 record."
+      }
+    },
+    {
+      "name": "Student 2 - Get Applicant",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/applicants/{{applicant_id}}?viewer_role=applicant",
+          "host": ["{{base_url}}"],
+          "path": ["applicants", "{{applicant_id}}"],
+          "query": [
+            {
+              "key": "viewer_role",
+              "value": "applicant",
+              "description": "Pass 'applicant' for full self-view (includes privacy_settings, preferences). Pass 'staff' for privacy-filtered view (national_id masked, phone/email hidden if privacy_settings block them)."
+            }
+          ]
+        },
+        "description": "Retrieves the applicant profile for {{applicant_id}} (default: APPL-001).\n\nThe viewer_role query parameter controls how much data is returned:\n  - viewer_role=applicant  → full self-view: all fields including privacy_settings and preferences\n  - viewer_role=staff      → staff view: national_id is masked (e.g. 90*****45), email/phone hidden if applicant's privacy_settings block them\n\nThis request uses viewer_role=applicant to demonstrate the full profile response.\nExpected result: 200 OK with complete applicant object.\nExpected failure: 404 Not Found if applicant_id does not exist."
+      }
+    },
+    {
+      "name": "Student 2 - Get Applicant (Staff View)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/applicants/{{applicant_id}}?viewer_role=staff",
+          "host": ["{{base_url}}"],
+          "path": ["applicants", "{{applicant_id}}"],
+          "query": [
+            {
+              "key": "viewer_role",
+              "value": "staff"
+            }
+          ]
+        },
+        "description": "Retrieves the applicant profile in privacy-restricted staff view.\n\nDifferences from applicant self-view:\n  - national_id is masked: first 2 and last 2 chars shown, rest replaced with *\n  - email is null if applicant set privacy_settings.show_email_to_staff = false\n  - phone is null if applicant set privacy_settings.show_phone_to_staff = false\n  - preferences and privacy_settings fields are omitted from the response\n\nFor APPL-001 (Ahmad Khalil), both show_email_to_staff and show_phone_to_staff are true, so both will appear. Compare with APPL-002 (Nour Ibrahim) who has show_email_to_staff=false — their email will be null in staff view."
+      }
+    },
+    {
+      "name": "Student 2 - Get Applicant Applications",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/applicants/{{applicant_id}}/applications",
+          "host": ["{{base_url}}"],
+          "path": ["applicants", "{{applicant_id}}", "applications"]
+        },
+        "description": "Returns all land applications linked to the applicant, sorted newest first.\n\nThe response includes:\n  - applicant_id\n  - total count\n  - applications array: each item has application_id, application_type, status, parcel_number, zone_id, submitted_at, updated_at, required_next_step\n\nThe required_next_step field is the first entry in the workflow.allowed_next array, which tells the applicant what action is expected next.\n\nFor APPL-001, the seeded linked_applications is ['LRMIS-2026-0001']. Applications are fetched by querying land_applications where applicant_ref matches the applicant_id.\n\nExpected result: 200 OK with applicant's application list.\nExpected failure: 404 Not Found if applicant does not exist."
+      }
+    },
+    {
+      "name": "Student 2 - Add Document",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"applicant_id\": \"APPL-002\",\n  \"document_type\": \"site_plan\",\n  \"filename\": \"site_plan_002_v2.pdf\",\n  \"file_url\": \"/uploads/LRMIS-2026-0002/site_plan_002_v2.pdf\",\n  \"file_path\": null,\n  \"mime_type\": \"application/pdf\",\n  \"size_bytes\": 153600,\n  \"uploaded_by\": \"APPL-002\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/{{application_id}}/documents",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{application_id}}", "documents"]
+        },
+        "description": "Uploads a supporting document for application {{application_id}} (default: LRMIS-2026-0002).\n\nThe application_id is taken from the URL path, not the request body.\nThe document is created with status 'pending_review' automatically — the uploaded_by field is informational.\nA generated document_id (format DOC-YYYY-NNNN) is returned in the response.\n\nThe service also:\n  - Updates land_applications.submitted_document_types\n  - Updates document_status_map for required document types\n  - Writes a compatibility stub to the Student 1 'documents' collection\n  - Logs to audit_logs and performance_logs\n\nExpected result: 201 Created with full document record.\nExpected failure: 404 Not Found if the application does not exist in land_applications."
+      }
+    },
+    {
+      "name": "Student 2 - Review Document",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"verified\",\n  \"reviewed_by\": \"staff_01\",\n  \"review_note\": \"Ownership deed is authentic and matches parcel records on file.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/{{application_id}}/documents/{{document_id}}/review",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{application_id}}", "documents", "{{document_id}}", "review"]
+        },
+        "description": "Staff reviews a document and sets its status. Uses {{document_id}} (default: DOC-2026-S003, ownership_deed in pending_review for LRMIS-2026-0002).\n\nAllowed status values: uploaded, pending_review, verified, rejected, missing.\nThe reviewed_by field is required — it records which staff member performed the review.\nThe review_note is optional but recommended.\n\nOn success, the service also:\n  - Updates document_status_map in land_applications to reflect the new status\n  - Logs to audit_logs (action: 'document_verified' or 'document_rejected')\n\nExpected result: 200 OK with updated document record including reviewed_at timestamp.\nExpected failure: 404 Not Found if the document_id does not exist for the given application_id.\n\nTo test rejection instead, change status to 'rejected' and update review_note accordingly."
+      }
+    },
+    {
+      "name": "Student 2 - Add Comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"comment_text\": \"I have resubmitted the ownership deed with the corrected parcel coordinates. Please review at your earliest convenience.\",\n  \"created_by\": \"APPL-002\",\n  \"actor_type\": \"applicant\",\n  \"visibility\": \"applicant_visible\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/{{application_id}}/comments",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{application_id}}", "comments"]
+        },
+        "description": "Adds a comment to application {{application_id}} (default: LRMIS-2026-0002).\n\nThe actor_type field identifies who is writing the comment: 'applicant' or 'staff'.\nThe visibility field controls whether the applicant can see the comment:\n  - 'applicant_visible' — shown to the applicant (default)\n  - 'staff_only'        — internal note, not shown to the applicant\n\nA generated comment_id (format CMT-YYYY-NNNN) is returned.\nComments also appear in the timeline (GET /applications/{id}/timeline) as 'comment_added' events.\n\nExpected result: 201 Created with full comment record including created_at timestamp.\nExpected failure: 404 Not Found if the application does not exist."
+      }
+    },
+    {
+      "name": "Student 2 - Submit Objection",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"submitted_by_applicant_id\": \"APPL-002\",\n  \"reason\": \"The application was moved to missing_documents status but all required documents were submitted on time. I am formally objecting to this classification and requesting an urgent review.\",\n  \"supporting_documents\": [\"DOC-2026-S003\"]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/{{application_id}}/objections",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{application_id}}", "objections"]
+        },
+        "description": "Submits a formal objection against application {{application_id}} (default: LRMIS-2026-0002).\n\nOn success:\n  - A new objection record is created in the 'objections' collection with status 'submitted'\n  - The application status in land_applications is updated to 'under_objection'\n  - workflow.current_state is set to 'under_objection'\n  - workflow.allowed_next is set to ['legal_review', 'rejected']\n  - objection.has_objection is set to true\n  - The objection_id is added to objection.objection_ids\n  - Events are logged to audit_logs and performance_logs\n\nThe reason field is mandatory and must not be empty (min_length=1).\n\nExpected result: 201 Created with objection record (objection_id format: OBJ-YYYY-NNNN).\nExpected failure: 404 Not Found if application does not exist."
+      }
+    },
+    {
+      "name": "Student 2 - Submit Objection (Fail: Empty reason)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"submitted_by_applicant_id\": \"APPL-002\",\n  \"reason\": \"\",\n  \"supporting_documents\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/{{application_id}}/objections",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{application_id}}", "objections"]
+        },
+        "description": "FAILURE EXAMPLE: Objection without a reason.\n\nThe reason field is defined with min_length=1 in ObjectionCreate schema. An empty string fails Pydantic validation before reaching the service layer.\n\nExpected result: 422 Unprocessable Entity with a validation error body:\n{\n  \"detail\": [\n    {\n      \"type\": \"string_too_short\",\n      \"loc\": [\"body\", \"reason\"],\n      \"msg\": \"String should have at least 1 character\",\n      ...\n    }\n  ]\n}\n\nThis demonstrates that objections without a stated reason are rejected at the schema level, not the service level."
+      }
+    },
+    {
+      "name": "Student 2 - Get Timeline",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/applications/{{application_id}}/timeline",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{application_id}}", "timeline"]
+        },
+        "description": "Returns the full chronological event timeline for application {{application_id}} (default: LRMIS-2026-0002).\n\nThe timeline aggregates events from multiple MongoDB collections:\n  1. performance_logs.event_stream    — application lifecycle events (submitted, pre_checked, etc.)\n  2. land_applications.timestamps     — submitted_at, pre_checked_at, approved_at, rejected_at, completed_at\n  3. application_documents            — document_uploaded and document_verified/rejected events\n  4. application_comments             — comment_added events\n  5. objections                       — objection_submitted events\n\nAll events are sorted chronologically by their 'at' timestamp.\n\nResponse shape:\n{\n  \"application_id\": \"LRMIS-2026-0002\",\n  \"current_status\": \"...\",\n  \"timeline\": [\n    { \"type\": \"submitted\", \"at\": \"...\", \"actor_type\": \"applicant\", \"actor_id\": \"...\", \"note\": \"...\" },\n    ...\n  ]\n}\n\nExpected result: 200 OK with timeline array.\nExpected failure: 404 Not Found if application does not exist."
+      }
+    },
+    {
+      "name": "Student 2 - Notification Stub (Indirect)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"submitted_by_applicant_id\": \"APPL-001\",\n  \"reason\": \"This objection demonstrates the objection_submitted notification event. In a fully wired implementation, submitting this objection would trigger notification_service.create_notification_stub(event_type='objection_submitted', applicant_id='APPL-001', application_id='LRMIS-2026-0001').\",\n  \"supporting_documents\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0001/objections",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0001", "objections"]
+        },
+        "description": "NOTIFICATION STUB — INDIRECT MECHANISM:\n\nThere is NO direct HTTP endpoint for notification stubs.\n\nThis request submits an objection for LRMIS-2026-0001 to demonstrate the 'objection_submitted' trigger event — one of the 5 notification events defined in notification_service.py:\n  - status_changed\n  - missing_documents_requested\n  - document_reviewed\n  - objection_submitted\n  - certificate_ready\n\nHOW THE STUB WORKS (when fully wired):\nThe notification_service.create_notification_stub() function in backend/app/services/notification_service.py:\n  1. Generates a notification_id (format: NOTIF-YYYY-NNNN)\n  2. Writes a record to the notification_logs MongoDB collection\n  3. Sets status = 'stub' (no real message is sent)\n  4. Stores event_type, applicant_id, application_id, channel, email, phone, message\n\nCURRENT STATUS:\nThe notification_service function exists and is correctly implemented, but it is NOT yet called from any service or event handler. The wiring between events (objection_service, document_service, workflow_service) and notification_service is not yet implemented.\n\nPRE-SEEDED STUBS:\nRun python -m app.seed.seed_student2 to populate notification_logs with 5 example stubs:\n  NOTIF-2026-S001 — status_changed       for APPL-001 / LRMIS-2026-0001\n  NOTIF-2026-S002 — missing_documents_requested for APPL-002 / LRMIS-2026-0002\n  NOTIF-2026-S003 — document_reviewed    for APPL-001 / LRMIS-2026-0001\n  NOTIF-2026-S004 — objection_submitted  for APPL-003 / LRMIS-2026-0003\n  NOTIF-2026-S005 — certificate_ready    for APPL-004 / LRMIS-2026-0005\n\nEach stub document has: { notification_id, applicant_id, application_id, event_type, channel, email, phone, message: '[STUB] ...', status: 'stub', created_at }\n\nExpected HTTP result: 201 Created (objection is created; the notification stub is an internal side-effect that does not affect the HTTP response)."
+      }
+    }
+  ]
+}

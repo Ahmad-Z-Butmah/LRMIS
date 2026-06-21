@@ -1,0 +1,203 @@
+/* ─── Lookup form ── */
+.objection-lookup-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.objection-lookup-form .form-input { flex: 1; min-width: 200px; }
+
+.objection-app-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+}
+
+.objection-app-id {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+}
+
+.objection-app-parcel {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* ─── Existing objection notice ── */
+.objection-existing {
+  padding: 13px 16px;
+  background: var(--color-warning-bg);
+  border: 1px solid #FDE68A;
+  border-left: 4px solid #D97706;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #92400E;
+}
+
+/* ─── Form sections ── */
+.objection-form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.char-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.char-counter__count {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* ─── Attachments ── */
+.objection-attach-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.objection-attach-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.objection-attach-item__name { flex: 1; }
+
+.objection-attach-remove {
+  background: none;
+  border: none;
+  color: var(--color-error);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.objection-attach-remove:hover { background: var(--color-error-bg); }
+
+.objection-attach-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 9px 18px;
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  background: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.objection-attach-add:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: #F0FDF4;
+}
+
+.objection-attach-hint {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  color: var(--color-muted);
+}
+
+/* ─── Mock notice ── */
+.objection-mock-notice {
+  padding: 11px 14px;
+  background: var(--color-warning-bg);
+  border: 1px solid #FDE68A;
+  border-left: 3px solid #D97706;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: #92400E;
+  margin-top: 8px;
+}
+
+/* ─── Form footer ── */
+.objection-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ─── Success state ── */
+.objection-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  min-height: 60vh;
+}
+
+.objection-success__card {
+  background: var(--color-card);
+  border-radius: var(--radius-xl);
+  padding: 52px 44px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--color-border);
+}
+
+.objection-success__icon  { font-size: 52px; margin-bottom: 16px; }
+
+.objection-success__title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.objection-success__desc {
+  margin: 0 0 28px;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.objection-success__id {
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.objection-success__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─── Responsive ── */
+@media (max-width: 640px) {
+  .objection-success__card  { padding: 36px 22px; }
+  .objection-form-footer    { flex-direction: column-reverse; align-items: stretch; }
+  .objection-form-footer .btn { width: 100%; justify-content: center; }
+}

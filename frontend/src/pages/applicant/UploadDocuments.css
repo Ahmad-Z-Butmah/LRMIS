@@ -1,0 +1,197 @@
+/* ─── Search form ── */
+.upload-search-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.upload-search-form .form-input { flex: 1; min-width: 200px; }
+
+/* ─── Loaded application info ── */
+.upload-app-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.upload-app-id-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.upload-app-id-code {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.03em;
+}
+
+.upload-app-ref {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* ─── Document list ── */
+.upload-doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-doc-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-card);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.upload-doc-row--selected {
+  border-color: var(--color-primary);
+  background: #F0FDF4;
+}
+
+.upload-doc-info { flex: 1; min-width: 0; }
+
+.upload-doc-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.upload-doc-filename {
+  font-size: 12.5px;
+  color: var(--color-success);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.upload-doc-status {
+  font-size: 12.5px;
+  color: var(--color-muted);
+  margin-top: 3px;
+}
+
+.upload-doc-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  transition: background 0.15s;
+}
+
+.upload-doc-btn:hover      { background: var(--color-secondary); }
+.upload-doc-btn--change    { background: var(--color-secondary); }
+
+/* ─── Submit footer ── */
+.upload-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.upload-count {
+  font-size: 13.5px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ─── Mock notice ── */
+.upload-mock-notice {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  background: var(--color-warning-bg);
+  border: 1px solid #FDE68A;
+  border-left: 3px solid #D97706;
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
+  color: #92400E;
+  margin-bottom: 20px;
+}
+
+.upload-mock-notice__icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+
+/* ─── Success state ── */
+.upload-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  min-height: 60vh;
+}
+
+.upload-success__card {
+  background: var(--color-card);
+  border-radius: var(--radius-xl);
+  padding: 52px 44px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--color-border);
+}
+
+.upload-success__icon  { font-size: 52px; margin-bottom: 16px; }
+
+.upload-success__title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.upload-success__desc {
+  margin: 0 0 28px;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.upload-success__id {
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.upload-success__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─── Responsive ── */
+@media (max-width: 640px) {
+  .upload-doc-row    { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .upload-doc-btn    { align-self: flex-end; }
+  .upload-success__card { padding: 36px 22px; }
+}

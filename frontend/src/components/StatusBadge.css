@@ -1,0 +1,93 @@
+/* ─── Base badge ── */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  line-height: 1.4;
+}
+
+/* ─── Per-status styles ── */
+.status-badge--submitted {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border-color: #BFDBFE;
+}
+
+.status-badge--pre-checked {
+  background: #F5F3FF;
+  color: #5B21B6;
+  border-color: #DDD6FE;
+}
+
+.status-badge--missing-documents {
+  background: #FFFBEB;
+  color: #92400E;
+  border-color: #FDE68A;
+}
+
+.status-badge--on-hold {
+  background: var(--color-bg-2);
+  color: var(--color-muted);
+  border-color: var(--color-border);
+}
+
+.status-badge--survey-required {
+  background: #ECFEFF;
+  color: #155E75;
+  border-color: #A5F3FC;
+}
+
+.status-badge--surveyed {
+  background: #F0FDF4;
+  color: #15532D;
+  border-color: #BBF7D0;
+}
+
+.status-badge--legal-review {
+  background: #F5F3FF;
+  color: #4C1D95;
+  border-color: #C4B5FD;
+}
+
+.status-badge--under-objection {
+  background: #FEF2F2;
+  color: #991B1B;
+  border-color: #FECACA;
+}
+
+.status-badge--approved {
+  background: #F0FDF4;
+  color: #15532D;
+  border-color: #86EFAC;
+}
+
+.status-badge--certificate-issued {
+  background: var(--color-primary);
+  color: #ffffff;
+  border-color: transparent;
+  letter-spacing: 0.04em;
+}
+
+.status-badge--closed {
+  background: var(--color-bg-2);
+  color: var(--color-muted);
+  border-color: var(--color-border);
+}
+
+.status-badge--rejected {
+  background: #FEF2F2;
+  color: #991B1B;
+  border-color: #FECACA;
+}
+
+.status-badge--unknown {
+  background: var(--color-bg-2);
+  color: var(--color-muted);
+  border-color: var(--color-border);
+}

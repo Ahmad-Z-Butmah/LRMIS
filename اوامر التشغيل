@@ -1,0 +1,15 @@
+===== MongoDB (Docker) =====
+docker start lrmis-mongo
+
+===== Backend (FastAPI) =====
+cd "c:\Users\m\OneDrive\Desktop\vs code\WEB SERVISE\LRMIS\backend"
+uvicorn app.main:app --host 0.0.0.0 --port 8001
+
+===== Frontend (React) =====
+cd "c:\Users\m\OneDrive\Desktop\vs code\WEB SERVISE\LRMIS\frontend"
+npm run dev
+
+===== روابط مهمة =====
+Backend API:  http://localhost:8001
+API Docs:     http://localhost:8001/docs
+Frontend:     http://localhost:5173

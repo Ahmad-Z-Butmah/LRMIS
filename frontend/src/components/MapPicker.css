@@ -1,0 +1,68 @@
+/* ─── Map container ── */
+.map-picker {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1.5px solid var(--color-border);
+}
+
+/* ─── Controls bar ── */
+.map-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--color-bg-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.map-controls__status {
+  font-size: 13px;
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.map-controls__actions { display: flex; gap: 8px; }
+
+.map-btn {
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.map-btn--clear {
+  background: transparent;
+  border: 1.5px solid var(--color-error);
+  color: var(--color-error);
+}
+
+.map-btn--clear:hover { background: var(--color-error-bg); }
+
+.map-btn--confirm {
+  border: 1.5px solid var(--color-primary);
+  color: #ffffff;
+  background: var(--color-primary);
+}
+
+.map-btn--confirm:hover:not(:disabled) {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.map-btn--confirmed {
+  background: #16A34A;
+  border-color: #16A34A;
+  color: #ffffff;
+}
+
+.map-btn--confirm:disabled {
+  background: var(--color-bg-2);
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  cursor: not-allowed;
+}

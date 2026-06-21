@@ -1,0 +1,293 @@
+{
+  "info": {
+    "name": "Student 3 — Surveyor & Registrar Assignment",
+    "description": "Postman collection for Student 3 backend endpoints: staff creation, profile retrieval, survey task auto-assign, manual reassign, milestone advancement, field notes, survey report upload, registrar review, analytics (KPIs, delayed applications, surveyor/registrar analytics), spatial filters, CSV exports, and management report.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url",     "value": "http://127.0.0.1:8001" },
+    { "key": "app_id",       "value": "LRMIS-2026-0001" },
+    { "key": "staff_id",     "value": "" },
+    { "key": "registrar_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Student 3 - Create Staff",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/staff/", "host": ["{{base_url}}"], "path": ["staff", ""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"staff_code\": \"SURV-PM-01\",\n  \"name\": \"Postman Surveyor One\",\n  \"role\": \"surveyor\",\n  \"department\": \"Cadastral Survey\",\n  \"skills\": [\"boundary_survey\", \"gps_mapping\"],\n  \"coverage\": { \"zone_ids\": [\"Z-EAST\", \"Z-WEST\"], \"geo_fence\": null },\n  \"schedule\": {\n    \"timezone\": \"Asia/Jerusalem\",\n    \"shifts\": [\n      { \"day\": \"Sun\", \"start\": \"08:00\", \"end\": \"16:00\" },\n      { \"day\": \"Mon\", \"start\": \"08:00\", \"end\": \"16:00\" }\n    ],\n    \"on_call\": false\n  },\n  \"workload\": { \"active_tasks\": 0, \"max_tasks\": 10 },\n  \"contacts\": { \"email\": \"surv_pm1@test.com\", \"phone\": \"+970599100001\" }\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Registrar Staff",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/staff/", "host": ["{{base_url}}"], "path": ["staff", ""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"staff_code\": \"REG-PM-01\",\n  \"name\": \"Postman Registrar One\",\n  \"role\": \"registrar\",\n  \"workload\": { \"active_tasks\": 0, \"max_tasks\": 20 },\n  \"contacts\": { \"email\": \"reg_pm1@test.com\", \"phone\": \"+970599200001\" }\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Get Staff",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/staff/{{staff_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["staff", "{{staff_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Auto Assign Surveyor",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/applications/{{app_id}}/auto-assign-surveyor",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{app_id}}", "auto-assign-surveyor"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Manual Reassign Surveyor",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/applications/{{app_id}}/reassign-surveyor",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{app_id}}", "reassign-surveyor"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"new_surveyor_id\": \"{{staff_id}}\",\n  \"reassigned_by\": \"MGR-ADMIN\",\n  \"reason\": \"Original surveyor on extended leave\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Update Survey Milestone",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/applications/{{app_id}}/survey-milestone",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{app_id}}", "survey-milestone"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"milestone\": \"visit_scheduled\",\n  \"by\": \"{{staff_id}}\",\n  \"note\": \"Site visit scheduled for 2026-06-28\",\n  \"meta\": { \"scheduled_date\": \"2026-06-28\" }\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Get Surveyor Tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/staff/{{staff_id}}/survey-tasks",
+          "host": ["{{base_url}}"],
+          "path": ["staff", "{{staff_id}}", "survey-tasks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Add Field Note",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/applications/{{app_id}}/comments",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{app_id}}", "comments"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"comment_text\": \"Field note: Site boundary markers confirmed. GPS coordinates recorded on parcel P-001.\",\n  \"created_by\": \"{{staff_id}}\",\n  \"actor_type\": \"surveyor\",\n  \"visibility\": \"applicant_visible\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Upload Survey Report",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/applications/{{app_id}}/survey-report",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "{{app_id}}", "survey-report"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"surveyor_id\": \"{{staff_id}}\",\n  \"task_id\": \"TASK-001\",\n  \"field_notes\": \"Site boundary markers confirmed. GPS coordinates recorded on parcel P-001.\",\n  \"measurements\": { \"area_sqm\": 1198.5, \"perimeter_m\": 139.2 },\n  \"status\": \"pending_review\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /analytics/kpis",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/kpis",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "kpis"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Delayed Applications",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/delayed-applications?days=7",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "delayed-applications"],
+          "query": [{ "key": "days", "value": "7" }]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Student 3 - Registrar Review",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/registrars",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "registrars"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11 — GET /analytics/geofeeds/parcels (zone filter)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/geofeeds/parcels?zone_id=Z-WEST",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "geofeeds", "parcels"],
+          "query": [
+            { "key": "zone_id", "value": "Z-WEST" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "12 — GET /analytics/geofeeds/pending-applications (type filter)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/geofeeds/pending-applications?application_type=ownership&status=submitted",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "geofeeds", "pending-applications"],
+          "query": [
+            { "key": "application_type", "value": "ownership" },
+            { "key": "status", "value": "submitted" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "13 — GET /analytics/geofeeds/nearby",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/geofeeds/nearby?lng=35.185&lat=31.985&max_distance=5000",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "geofeeds", "nearby"],
+          "query": [
+            { "key": "lng",          "value": "35.185" },
+            { "key": "lat",          "value": "31.985" },
+            { "key": "max_distance", "value": "5000"   }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "14 — GET /analytics/export/applications.csv",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/export/applications.csv",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "export", "applications.csv"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "15 — GET /analytics/export/surveyors.csv",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/export/surveyors.csv",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "export", "surveyors.csv"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "16 — GET /analytics/export/management-report",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/export/management-report?threshold_days=30",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "export", "management-report"],
+          "query": [{ "key": "threshold_days", "value": "30" }]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "17 — GET /analytics/geofeeds/disputed-parcels (zone filter)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/analytics/geofeeds/disputed-parcels?zone_id=Z-EAST",
+          "host": ["{{base_url}}"],
+          "path": ["analytics", "geofeeds", "disputed-parcels"],
+          "query": [{ "key": "zone_id", "value": "Z-EAST" }]
+        }
+      },
+      "response": []
+    }
+  ]
+}

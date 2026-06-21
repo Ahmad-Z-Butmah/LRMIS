@@ -1,0 +1,159 @@
+/* ─── Survey Milestone Stepper ─────────────────────────────────────────── */
+.sms {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── Track: horizontal list of steps ── */
+.sms__track {
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.sms__track::-webkit-scrollbar { display: none; }
+
+/* ─── Each step: line + node + label ── */
+.sms__step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+/* ─── Connector line ── */
+.sms__line {
+  flex: 1;
+  height: 2px;
+  background: var(--color-border);
+  min-width: 12px;
+  transition: background 0.2s;
+}
+
+.sms__line--done {
+  background: var(--color-primary);
+}
+
+/* ─── Node + label wrap ── */
+.sms__node-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ─── Node circle ── */
+.sms__node {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-border);
+  background: var(--color-card);
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.sms__step--completed .sms__node {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.sms__step--current .sms__node {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(217,119,6,0.2);
+}
+
+.sms__step--upcoming .sms__node {
+  background: var(--color-card);
+  border-color: var(--color-border);
+}
+
+/* ─── Checkmark icon ── */
+.sms__check {
+  width: 13px;
+  height: 13px;
+  color: #fff;
+}
+
+/* ─── Step number ── */
+.sms__num {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-ui);
+  line-height: 1;
+}
+
+.sms__step--current .sms__num  { color: #fff; }
+.sms__step--upcoming .sms__num { color: var(--color-muted); }
+
+/* ─── Step label ── */
+.sms__label {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.sms__step--completed .sms__label { color: var(--color-primary); }
+.sms__step--current .sms__label   { color: var(--color-accent); }
+.sms__step--upcoming .sms__label  { color: var(--color-muted); }
+
+/* ─── Current milestone verbose label ── */
+.sms__current-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 8px 12px;
+  background: var(--color-bg-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.sms__current-prefix {
+  font-weight: 700;
+  color: var(--color-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+
+.sms__current-value {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.sms__final-badge {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-left: 4px;
+}
+
+/* ─── Mobile — compact ── */
+@media (max-width: 640px) {
+  .sms__node  { width: 24px; height: 24px; }
+  .sms__check { width: 10px; height: 10px; }
+  .sms__num   { font-size: 10px; }
+  .sms__label { font-size: 9px; }
+  .sms__line  { min-width: 6px; }
+}

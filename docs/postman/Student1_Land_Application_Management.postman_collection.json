@@ -1,0 +1,277 @@
+{
+  "info": {
+    "name": "Student 1 - Land Application Management",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Postman collection for Student 1 - Land Application Management APIs (LRMIS).\n\nNOTE: Run seed_data.py before using this collection. Some requests change application status. For repeatable testing, reset the seed before rerunning transition/action requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Student 1 - Create Application",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "test-create-001"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"applicant_ref\": \"APPL-TEST-001\",\n  \"parcel_ref\": \"P-001\",\n  \"required_documents\": [\"national_id\", \"ownership_deed\"]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/",
+          "host": ["{{base_url}}"],
+          "path": ["applications", ""]
+        },
+        "description": "Creates a new land application. Expected result: 201 Created with the new application ID and status 'submitted'. The Idempotency-Key header prevents duplicate submissions if the request is retried."
+      }
+    },
+    {
+      "name": "Student 1 - List Applications",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/applications/?status=submitted&page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["applications", ""],
+          "query": [
+            {
+              "key": "status",
+              "value": "submitted"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        },
+        "description": "Lists applications filtered by status='submitted' with pagination (page 1, 10 per page). Expected result: 200 OK with a paginated list of submitted applications. Read-only — safe to run at any time without affecting application state."
+      }
+    },
+    {
+      "name": "Student 1 - Get Application Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0001",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0001"]
+        },
+        "description": "Retrieves full details for application LRMIS-2026-0001. Expected result: 200 OK with the application object including current state, history, and document list. Read-only — safe to run at any time without affecting application state."
+      }
+    },
+    {
+      "name": "Student 1 - Valid Transition",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"target_state\": \"pre_checked\",\n  \"actor_type\": \"staff\",\n  \"actor_id\": \"staff_14\",\n  \"note\": \"Initial pre-check completed\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0001/transition",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0001", "transition"]
+        },
+        "description": "Moves LRMIS-2026-0001 from 'submitted' to 'pre_checked' — a valid step in the workflow. Expected result: 200 OK with updated application state. Prerequisite: LRMIS-2026-0001 must be in 'submitted' state (run seed_data.py to reset). This request mutates state, so running it twice will fail with a state conflict."
+      }
+    },
+    {
+      "name": "Student 1 - Invalid Transition",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"target_state\": \"approved\",\n  \"actor_type\": \"staff\",\n  \"actor_id\": \"staff_14\",\n  \"note\": \"Trying invalid transition\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0002/transition",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0002", "transition"]
+        },
+        "description": "Attempts to jump LRMIS-2026-0002 directly from 'submitted' to 'approved', skipping required intermediate states. Expected result: 400 Bad Request or 422 Unprocessable Entity with an error message indicating the transition is not allowed. Uses a separate application ID from the Valid Transition request to avoid state pollution. Prerequisite: LRMIS-2026-0002 must be in 'submitted' state."
+      }
+    },
+    {
+      "name": "Student 1 - Hold Application",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reason\": \"Waiting for municipality confirmation\",\n  \"held_by\": \"staff_14\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0003/hold",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0003", "hold"]
+        },
+        "description": "Places LRMIS-2026-0003 on hold pending external confirmation. Expected result: 200 OK with the application status updated to 'on_hold'. Uses a dedicated application ID separate from Reject and Missing Documents requests to prevent state conflicts. Prerequisite: LRMIS-2026-0003 must be in an active (non-terminal) state."
+      }
+    },
+    {
+      "name": "Student 1 - Reject Application",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reason\": \"Ownership document is invalid\",\n  \"rejected_by\": \"registrar_09\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0004/reject",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0004", "reject"]
+        },
+        "description": "Rejects LRMIS-2026-0004 due to an invalid ownership document. Expected result: 200 OK with the application status updated to 'rejected'. Uses a dedicated application ID separate from Hold and Missing Documents requests. Prerequisite: LRMIS-2026-0004 must be in an active (non-terminal) state. This is a terminal action — the application cannot be transitioned further after rejection."
+      }
+    },
+    {
+      "name": "Student 1 - Missing Documents",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"missing_documents\": [\"ownership_deed\", \"id_copy\"],\n  \"note_to_applicant\": \"Please upload the missing documents.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0005/missing-documents",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0005", "missing-documents"]
+        },
+        "description": "Flags LRMIS-2026-0005 as having missing documents and notifies the applicant. Expected result: 200 OK with the application status updated to reflect the document request (e.g., 'pending_documents'). Uses a dedicated application ID separate from Hold and Reject requests to prevent state conflicts. Prerequisite: LRMIS-2026-0005 must be in an active state."
+      }
+    },
+    {
+      "name": "Student 1 - Generate Certificate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"certificate_type\": \"ownership\",\n  \"issued_to\": {\n    \"full_name\": \"Test User\",\n    \"national_id\": \"999999999\",\n    \"address\": \"Ramallah\"\n  },\n  \"issued_by\": \"registrar_09\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0004/certificate",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0004", "certificate"]
+        },
+        "description": "Issues an ownership certificate for LRMIS-2026-0004. Expected result: 200 OK or 201 Created with the generated certificate details and application status updated to 'certificate_issued'. PREREQUISITE: LRMIS-2026-0004 must be in 'approved' state AND must not already have a certificate issued. If the application is not approved or a certificate already exists, the request will fail. Reset seed_data.py to restore this precondition."
+      }
+    },
+    {
+      "name": "Student 1 - Close Application",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"target_state\": \"closed\",\n  \"actor_type\": \"registrar\",\n  \"actor_id\": \"registrar_09\",\n  \"note\": \"Certificate issued and application closed\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/applications/LRMIS-2026-0005/transition",
+          "host": ["{{base_url}}"],
+          "path": ["applications", "LRMIS-2026-0005", "transition"]
+        },
+        "description": "Closes LRMIS-2026-0005 after the certificate has been issued. Expected result: 200 OK with the application status updated to 'closed'. Uses a separate application ID from Generate Certificate so both requests can be run independently. Prerequisite: LRMIS-2026-0005 must be in 'certificate_issued' state. This is a terminal action — the application cannot be transitioned further once closed."
+      }
+    }
+  ]
+}

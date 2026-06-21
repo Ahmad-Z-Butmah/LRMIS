@@ -1,0 +1,309 @@
+/* ─── Wrapper ── */
+.timeline-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.timeline-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timeline-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* ─── Workflow progress stepper ── */
+.timeline-steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-step {
+  display: flex;
+  gap: 16px;
+  min-height: 56px;
+}
+
+/* Rail: circle dot + connector line */
+.timeline-step__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.timeline-step__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.timeline-step__line {
+  width: 2px;
+  flex: 1;
+  background: var(--color-border);
+  margin: 3px 0;
+  min-height: 18px;
+  transition: background 0.2s;
+}
+
+.timeline-step__check {
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  display: block;
+}
+
+.timeline-step__body {
+  padding-bottom: 22px;
+  flex: 1;
+}
+
+.timeline-step__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-muted);
+  line-height: 1.4;
+  margin-top: 1px;
+  transition: color 0.2s;
+}
+
+.timeline-step__sub {
+  font-size: 12.5px;
+  color: var(--color-muted);
+  margin-top: 3px;
+  opacity: 0.65;
+}
+
+/* ── Completed: green filled circle, green connector ── */
+.timeline-step--completed .timeline-step__dot {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.timeline-step--completed .timeline-step__line {
+  background: var(--color-primary);
+  opacity: 0.3;
+}
+
+.timeline-step--completed .timeline-step__label {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.timeline-step--completed .timeline-step__sub {
+  opacity: 0.8;
+  color: var(--color-secondary);
+}
+
+/* ── Current: green circle with outer ring ── */
+.timeline-step--current .timeline-step__dot {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(21,83,45,0.12);
+  width: 22px;
+  height: 22px;
+}
+
+.timeline-step--current .timeline-step__label {
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: 14.5px;
+}
+
+.timeline-step--current .timeline-step__sub {
+  opacity: 1;
+  color: var(--color-secondary);
+  font-weight: 500;
+}
+
+/* ── Upcoming: pale / muted ── */
+.timeline-step--upcoming .timeline-step__dot {
+  border-color: var(--color-border);
+  background: var(--color-bg-2);
+}
+
+.timeline-step--upcoming .timeline-step__label { opacity: 0.4; }
+.timeline-step--upcoming .timeline-step__sub   { opacity: 0.25; }
+
+/* ─── Alternative state banner ── */
+.timeline-alt-banner {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  border-left: 4px solid;
+}
+
+.timeline-alt-banner--warning {
+  background: var(--color-warning-bg);
+  border-color: #FDE68A;
+  border-left-color: #D97706;
+  color: #92400E;
+}
+
+.timeline-alt-banner--danger {
+  background: var(--color-error-bg);
+  border-color: var(--color-error-bdr);
+  border-left-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.timeline-alt-banner--neutral {
+  background: var(--color-bg-2);
+  border-color: var(--color-border);
+  border-left-color: var(--color-muted);
+  color: var(--color-text-2);
+}
+
+.timeline-alt-banner__icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+
+.timeline-alt-banner__title {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.timeline-alt-banner__desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+/* ─── Audit event log ── */
+.timeline-log__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-log__item {
+  display: flex;
+  gap: 14px;
+}
+
+.timeline-log__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.timeline-log__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-bg-2);
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Per-status dot colours */
+.timeline-log__dot--submitted          { border-color: #2563EB; background: #DBEAFE; }
+.timeline-log__dot--pre-checked        { border-color: #7C3AED; background: #EDE9FE; }
+.timeline-log__dot--missing-documents  { border-color: #D97706; background: #FEF3C7; }
+.timeline-log__dot--on-hold            { border-color: #64748B; background: #F1F5F9; }
+.timeline-log__dot--survey-required    { border-color: #0E7490; background: #CFFAFE; }
+.timeline-log__dot--surveyed           { border-color: #059669; background: #D1FAE5; }
+.timeline-log__dot--legal-review       { border-color: #5B21B6; background: #EDE9FE; }
+.timeline-log__dot--under-objection    { border-color: #DC2626; background: #FEE2E2; }
+.timeline-log__dot--approved           { border-color: #16A34A; background: #D1FAE5; }
+.timeline-log__dot--certificate-issued { border-color: #15532D; background: #ECFDF5; }
+.timeline-log__dot--closed             { border-color: #94A3B8; background: #F1F5F9; }
+.timeline-log__dot--rejected           { border-color: #DC2626; background: #FEE2E2; }
+
+.timeline-log__line {
+  width: 1px;
+  flex: 1;
+  background: var(--color-border);
+  margin: 2px 0;
+  min-height: 12px;
+}
+
+.timeline-log__content {
+  padding-bottom: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.timeline-log__item--last .timeline-log__content {
+  padding-bottom: 0;
+}
+
+.timeline-log__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+
+.timeline-log__time {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.timeline-log__action {
+  font-size: 13.5px;
+  color: var(--color-text-2);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+.timeline-log__actor {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+.timeline-log__empty {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ─── Empty state ── */
+.timeline-empty {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--color-muted);
+}
+
+.timeline-empty__icon { font-size: 30px; margin-bottom: 10px; opacity: 0.45; }
+.timeline-empty__text { font-size: 14px; margin: 0; }
+
+/* ─── Responsive ── */
+@media (max-width: 640px) {
+  .timeline-step__body   { padding-bottom: 14px; }
+  .timeline-log__content { padding-bottom: 14px; }
+}

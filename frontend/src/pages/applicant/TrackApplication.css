@@ -1,0 +1,259 @@
+/* ─── Search hero (initial state — no app loaded) ── */
+.track-search-hero {
+  text-align: center;
+  padding: 48px 0 40px;
+  max-width: 600px;
+  margin: 0 auto 8px;
+}
+
+.track-search-hero__title {
+  margin: 0 0 10px;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.track-search-hero__desc {
+  margin: 0 0 28px;
+  color: var(--color-muted);
+  font-size: 16px;
+}
+
+.track-search-hero__input {
+  font-size: 16px;
+  padding: 13px 16px;
+}
+
+/* ─── Search form (shared) ── */
+.track-search-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.track-search-form .form-input { flex: 1; min-width: 220px; }
+
+/* ─── Compact search (when app is shown) ── */
+.track-search-form--compact {
+  margin-bottom: 20px;
+}
+
+/* ─── Status hero card ── */
+.track-status-hero {
+  background: var(--color-primary);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  animation: card-rise 0.35s ease-out both;
+}
+
+.track-status-hero__left,
+.track-status-hero__right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.track-status-hero__right { align-items: flex-end; }
+
+/* Override status badge colours for white contrast inside the green card */
+.track-status-hero .status-badge {
+  font-size: 13px;
+  padding: 5px 14px;
+}
+
+/* ─── Application ID display ── */
+.track-id-label {
+  font-size: 11px;
+  font-family: var(--font-ui);
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.track-id-code {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.03em;
+}
+
+/* ─── Application meta grid ── */
+.track-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.track-meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+.track-meta-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.track-meta-value {
+  font-size: 15px;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.track-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ─── Status pills ── */
+.track-status-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.track-status-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+}
+
+.track-status-pill__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.track-status-pill__value {
+  font-size: 14px;
+  color: var(--color-text);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* ─── Document list ── */
+.track-doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.track-doc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  border: 1px solid;
+}
+
+.track-doc-item--submitted {
+  background: var(--color-success-bg);
+  border-color: #86EFAC;
+  border-left: 3px solid #16A34A;
+}
+
+.track-doc-item--pending {
+  background: var(--color-warning-bg);
+  border-color: #FDE68A;
+  border-left: 3px solid #D97706;
+}
+
+.track-doc-icon { font-size: 14px; flex-shrink: 0; }
+.track-doc-name { color: var(--color-text); flex: 1; }
+
+.track-doc-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.track-doc-badge--submitted { color: #16A34A; }
+.track-doc-badge--pending   { color: #D97706; }
+
+/* ─── Registry notes ── */
+.track-notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.track-note {
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+}
+
+.track-note__meta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.track-note__text {
+  font-size: 14px;
+  color: var(--color-text-2);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ─── Loading ── */
+.track-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  color: var(--color-muted);
+  font-size: 15px;
+}
+
+.track-loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ─── Responsive ── */
+@media (max-width: 640px) {
+  .track-search-hero        { padding: 28px 0 24px; }
+  .track-search-hero__title { font-size: 24px; }
+  .track-status-hero        { flex-direction: column; align-items: flex-start; }
+  .track-status-hero__right { align-items: flex-start; }
+  .track-meta-grid          { grid-template-columns: 1fr 1fr; }
+  .track-status-row         { grid-template-columns: 1fr; }
+}

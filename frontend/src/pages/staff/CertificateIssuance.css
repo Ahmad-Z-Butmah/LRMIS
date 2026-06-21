@@ -1,0 +1,302 @@
+.ci-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ci-page-header__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-registry);
+  margin: 0 0 4px;
+  font-family: var(--font-ui);
+}
+
+.ci-page-header__desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+/* ── Table card ── */
+.ci-table-card {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.ci-loading,
+.ci-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.ci-empty__icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.ci-table-scroll {
+  overflow-x: auto;
+}
+
+.ci-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.ci-table th {
+  background: var(--color-bg-2);
+  color: var(--color-muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ci-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--color-border-2);
+  vertical-align: middle;
+}
+
+.ci-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ci-table tbody tr:hover {
+  background: var(--color-bg-2);
+}
+
+.ci-app-id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-primary);
+  background: var(--color-bg-2);
+  padding: 2px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.ci-td-muted {
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+.ci-cert-status {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--color-muted);
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Action buttons ── */
+.ci-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.ci-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+  line-height: 1.2;
+}
+
+.ci-btn--view {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ci-btn--view:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.ci-btn--generate {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.ci-btn--generate:hover {
+  background: var(--color-registry);
+  border-color: var(--color-registry);
+}
+
+/* ── Modal ── */
+.ci-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.ci-modal {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.ci-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 0;
+}
+
+.ci-modal__title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-registry);
+  font-family: var(--font-ui);
+}
+
+.ci-modal__close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: var(--color-muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.ci-modal__body {
+  padding: 16px 20px;
+}
+
+.ci-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0 20px 18px;
+}
+
+.ci-modal-app-id {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.ci-modal-app-id code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-primary);
+  background: var(--color-bg-2);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.ci-modal-err {
+  margin-bottom: 12px;
+}
+
+.ci-required {
+  color: #DC2626;
+}
+
+/* ── Certificate result ── */
+.ci-result {
+  text-align: center;
+}
+
+.ci-result__icon {
+  font-size: 36px;
+  color: var(--color-primary);
+  background: #DCFCE7;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-weight: 700;
+}
+
+.ci-result__msg {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-registry);
+  margin: 0 0 16px;
+}
+
+.ci-result__grid {
+  text-align: left;
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.ci-result__row {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--color-border-2);
+  align-items: baseline;
+}
+
+.ci-result__row:last-child {
+  border-bottom: none;
+}
+
+.ci-result__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.ci-result__val {
+  font-size: 13px;
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+.ci-result__link {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.ci-result__note {
+  font-size: 12.5px;
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin: 0 0 4px;
+}

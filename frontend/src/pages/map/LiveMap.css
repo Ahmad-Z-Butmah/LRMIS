@@ -1,0 +1,312 @@
+/* ─── Live Map Page ─────────────────────────────────────────────────────── */
+.lm-page {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 72px);
+}
+
+/* ─── Header ── */
+.lm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.lm-header__title {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.lm-header__desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.lm-header__badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ─── Count badges ── */
+.lm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-ui);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.lm-badge--green { background: #F0FDF4; color: #15532D; border: 1px solid #BBF7D0; }
+.lm-badge--amber { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
+.lm-badge--red   { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+
+/* ─── Main layout ── */
+.lm-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  flex: 1;
+  min-height: 560px;
+}
+
+/* ─── Sidebar ── */
+.lm-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  overflow-y: auto;
+  max-height: 700px;
+}
+
+/* ─── Map wrapper ── */
+.lm-map-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  min-height: 500px;
+}
+
+.lm-map {
+  position: absolute;
+  inset: 0;
+}
+
+/* ─── Map loading overlay ── */
+.lm-map-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: rgba(247,249,252,0.9);
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+/* ─── Marker clustering active notice ── */
+.lm-cluster-active {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-left: 3px solid #15532D;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: #14532D;
+  line-height: 1.5;
+}
+
+.lm-cluster-active__icon {
+  font-size: 15px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #15532D;
+}
+
+.lm-cluster-active strong {
+  display: block;
+  font-size: 11.5px;
+  margin-bottom: 3px;
+}
+
+.lm-cluster-active p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.lm-cluster-active code {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  background: rgba(0,0,0,0.07);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+/* ─── Legend ── */
+.lm-legend {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.lm-legend__title {
+  margin: 0 0 10px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+  font-family: var(--font-ui);
+}
+
+.lm-legend__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.lm-legend__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.lm-legend__label {
+  font-size: 12.5px;
+  color: var(--color-text-2);
+}
+
+/* ─── Selected feature panel ── */
+.lm-panel {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  animation: card-rise 0.2s ease-out both;
+}
+
+.lm-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--color-registry);
+}
+
+.lm-panel__title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.8);
+  font-family: var(--font-ui);
+}
+
+.lm-panel__close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.1s;
+}
+
+.lm-panel__close:hover { color: #fff; }
+
+.lm-panel__body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.lm-panel__row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.lm-panel__key {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-muted);
+  font-family: var(--font-ui);
+}
+
+.lm-panel__val {
+  font-size: 12.5px;
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+.lm-panel__empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* ─── Footer note ── */
+.lm-note {
+  margin: 12px 0 0;
+  font-size: 11.5px;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.lm-note code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--color-bg-2);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-style: normal;
+}
+
+/* ─── Responsive ── */
+@media (max-width: 960px) {
+  .lm-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .lm-sidebar {
+    max-height: none;
+    overflow-y: visible;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .lm-sidebar > * {
+    min-width: 240px;
+    flex: 1;
+  }
+
+  .lm-map-wrap { min-height: 400px; }
+}
+
+@media (max-width: 640px) {
+  .lm-page   { padding: 16px; }
+  .lm-header { flex-direction: column; }
+  .lm-map-wrap { min-height: 320px; }
+  .lm-sidebar { flex-direction: column; }
+  .lm-sidebar > * { min-width: 0; }
+}
