@@ -11,7 +11,6 @@ The platform manages the workflow from the initial application submission until 
 LRMIS provides different modules for different users involved in the land registration process.
 
 The system includes:
-
 - Applicant application submission
 - Application tracking and workflow management
 - Document upload and verification
@@ -21,7 +20,7 @@ The system includes:
 - GIS visualization
 - Analytics and reporting
 - Role-based access
-
+   
 ## Main Workflows
 
 The application follows a structured registration workflow:
